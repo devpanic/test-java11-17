@@ -6,8 +6,10 @@ $imageExists = docker images -q my-java-app
 if (-not $imageExists) {
     Write-Host "Docker image does not exist. Building a new one." -ForegroundColor Yellow
     docker build --no-cache -t my-java-app .
-} else {
+}
+else {
     Write-Host "Using existing Docker image." -ForegroundColor Green
+    docker build --no-cache -t my-java-app .
 }
 
 if ($LASTEXITCODE -eq 0) {
@@ -35,9 +37,11 @@ if ($LASTEXITCODE -eq 0) {
     $containerStatus = docker inspect -f '{{.State.Status}}' my-java-app-container
     if ($containerStatus -eq "running") {
         Write-Host "8. Container is running successfully." -ForegroundColor Green
-    } else {
+    }
+    else {
         Write-Host "9. There is an issue with the container. Status: $containerStatus" -ForegroundColor Red
     }
-} else {
+}
+else {
     Write-Host "Docker image build failed. Please check the logs." -ForegroundColor Red
 }
